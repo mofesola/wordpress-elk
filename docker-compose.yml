@@ -1,0 +1,79 @@
+version: "2.0"
+services:
+  nginx:
+    build: nginx/.
+    ports:
+      - 8080:80
+      - 80:80
+    volumes:
+      - ./app:/var/www/html
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://localhost:5000"
+
+  wordpress:
+    image: wordpress:php7.0-fpm
+    environment:
+      WORDPRESS_DB_PASSWORD: fr323u8a
+    volumes:
+      - ./app:/var/www/html
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://localhost:5000"
+
+  mysql:
+    image: mariadb:10.1.22
+    environment:
+      MYSQL_ROOT_PASSWORD: fr323u8a
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://localhost:5000"
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.2.2
+    volumes:
+      - ./data/elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    environment:
+      - http.host=0.0.0.0
+      - transport.host=127.0.0.1
+      - cluster.name=docker-cluster
+      - bootstrap.memory_lock=true
+      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    mem_limit: 1g
+    cap_add:
+      - IPC_LOCK
+
+  logstash:
+    build: logstash/
+    volumes:
+      - ./logstash/pipeline/:/usr/share/logstash/pipeline/
+      - ./logstash/config/:/usr/share/logstash/config/
+    ports:
+    - "5000:5000"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:5.2.2
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://localhost:5000"
