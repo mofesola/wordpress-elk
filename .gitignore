@@ -53,3 +53,6 @@ Thumbs.db
 # track these files, if they exist
 !.gitignore
 !.editorconfig
+
+app/*
+data/*
