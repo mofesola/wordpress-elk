@@ -1,0 +1,81 @@
+version: "2.0"
+services:
+  nginx:
+    build: nginx/.
+    ports:
+      - 8080:80
+      - 80:80
+    volumes:
+      - ./app:/var/www/html
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://localhost:5001"
+
+  wordpress:
+    image: wordpress:php7.0-fpm
+    env_file: .env
+    volumes:
+      - ./app:/var/www/html
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://localhost:5002"
+
+  mysql:
+    image: mariadb:10.1.22
+    env_file: .env
+    volumes:
+      - ./data/mysql:/var/lib/mysql
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://localhost:5003"
+
+  elasticsearch:
+    image: docker.elastic.co/elasticsearch/elasticsearch:5.2.2
+    volumes:
+      - ./data/elasticsearch:/usr/share/elasticsearch/data
+    ports:
+      - "9200:9200"
+    env_file: .env
+    ulimits:
+      memlock:
+        soft: -1
+        hard: -1
+      nofile:
+        soft: 65536
+        hard: 65536
+    mem_limit: 1g
+    cap_add:
+      - IPC_LOCK
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://localhost:5004"
+
+  logstash:
+    build: logstash/
+    volumes:
+      - ./logstash/pipeline/:/usr/share/logstash/pipeline/
+      - ./logstash/config/:/usr/share/logstash/config/
+    ports:
+    - "5000:5000"
+    - "5001:5001"
+    - "5002:5002"
+    - "5003:5003"
+    - "5004:5004"
+    - "5005:5005"
+    environment:
+      LS_JAVA_OPTS: "-Xmx256m -Xms256m"
+
+  kibana:
+    image: docker.elastic.co/kibana/kibana:5.2.2
+    environment:
+      ELASTICSEARCH_URL: http://elasticsearch:9200
+    ports:
+      - "5601:5601"
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://localhost:5005"

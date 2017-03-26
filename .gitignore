@@ -53,3 +53,26 @@ Thumbs.db
 # track these files, if they exist
 !.gitignore
 !.editorconfig
+!.boto.enc
+!.travis.yml
+!.env.tmpl
+
+app/*
+data/*
+
+# -------------------------
+# Ansible
+# -------------------------
+
+._*
+bin/
+lib/
+include/
+local/
+tests.out
+*.retry
+*.log
+vbox_host.cfg
+*.pem
+*.key
+id_rsa
