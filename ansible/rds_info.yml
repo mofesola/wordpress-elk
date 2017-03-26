@@ -1,0 +1,4 @@
+db_hostname: mydb.cpqsfknb8sgc.eu-west-1.rds.amazonaws.com
+db_name: wordpress
+db_username: wordpress
+db_password: wordpress

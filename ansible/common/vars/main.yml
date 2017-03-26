@@ -1,0 +1,13 @@
+---
+ timezone: "Africa/Lagos"
+ pkgs_list:
+   - build-essential
+   - python-software-properties
+   - git
+   - unattended-upgrades
+   - openntpd
+ users_list:
+  - username: mofesola
+    github_username: mofesola
+    type: admin
+    state: present
