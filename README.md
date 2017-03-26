@@ -15,7 +15,7 @@ You should read about configuring infrastructure with ansible to make this easie
 5. Submit a pull request :D
 6. A couple of us will look through and tell you if it's good to go.
 
-## Credits
+## TODO
 TODO: Infrastructure as code with Terraform instead of Ansible. Support other cloud providers
 
 ## Credits
