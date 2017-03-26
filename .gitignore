@@ -56,3 +56,17 @@ Thumbs.db
 
 app/*
 data/*
+
+# -------------------------
+# Ansible
+# -------------------------
+
+._*
+bin/
+lib/
+include/
+local/
+tests.out
+*.retry
+*.log
+vbox_host.cfg
