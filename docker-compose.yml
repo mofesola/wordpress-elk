@@ -10,7 +10,7 @@ services:
     logging:
       driver: syslog
       options:
-        syslog-address: "tcp://localhost:5000"
+        syslog-address: "tcp://localhost:5001"
 
   wordpress:
     image: wordpress:php7.0-fpm
@@ -21,7 +21,7 @@ services:
     logging:
       driver: syslog
       options:
-        syslog-address: "tcp://localhost:5000"
+        syslog-address: "tcp://localhost:5002"
 
   mysql:
     image: mariadb:10.1.22
@@ -32,7 +32,7 @@ services:
     logging:
       driver: syslog
       options:
-        syslog-address: "tcp://localhost:5000"
+        syslog-address: "tcp://localhost:5003"
 
   elasticsearch:
     image: docker.elastic.co/elasticsearch/elasticsearch:5.2.2
@@ -56,6 +56,10 @@ services:
     mem_limit: 1g
     cap_add:
       - IPC_LOCK
+    logging:
+      driver: syslog
+      options:
+        syslog-address: "tcp://localhost:5004"
 
   logstash:
     build: logstash/
@@ -64,6 +68,11 @@ services:
       - ./logstash/config/:/usr/share/logstash/config/
     ports:
     - "5000:5000"
+    - "5001:5001"
+    - "5002:5002"
+    - "5003:5003"
+    - "5004:5004"
+    - "5005:5005"
     environment:
       LS_JAVA_OPTS: "-Xmx256m -Xms256m"
 
@@ -76,4 +85,4 @@ services:
     logging:
       driver: syslog
       options:
-        syslog-address: "tcp://localhost:5000"
+        syslog-address: "tcp://localhost:5005"
