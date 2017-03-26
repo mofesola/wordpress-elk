@@ -53,6 +53,9 @@ Thumbs.db
 # track these files, if they exist
 !.gitignore
 !.editorconfig
+!.boto.enc
+!.travis.yml
+!.env.tmpl
 
 app/*
 data/*
@@ -70,3 +73,6 @@ tests.out
 *.retry
 *.log
 vbox_host.cfg
+*.pem
+*.key
+id_rsa

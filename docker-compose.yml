@@ -14,8 +14,7 @@ services:
 
   wordpress:
     image: wordpress:php7.0-fpm
-    environment:
-      WORDPRESS_DB_PASSWORD: fr323u8a
+    env_file: .env
     volumes:
       - ./app:/var/www/html
     logging:
@@ -25,8 +24,7 @@ services:
 
   mysql:
     image: mariadb:10.1.22
-    environment:
-      MYSQL_ROOT_PASSWORD: fr323u8a
+    env_file: .env
     volumes:
       - ./data/mysql:/var/lib/mysql
     logging:
@@ -40,12 +38,7 @@ services:
       - ./data/elasticsearch:/usr/share/elasticsearch/data
     ports:
       - "9200:9200"
-    environment:
-      - http.host=0.0.0.0
-      - transport.host=127.0.0.1
-      - cluster.name=docker-cluster
-      - bootstrap.memory_lock=true
-      - ES_JAVA_OPTS=-Xms512m -Xmx512m
+    env_file: .env
     ulimits:
       memlock:
         soft: -1
